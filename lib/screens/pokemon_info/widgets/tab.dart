@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/screens/pokemon_info/widgets/tab_snw.dart';
 import 'package:provider/provider.dart';
 
 import '../../../configs/AppColors.dart';
@@ -19,12 +20,8 @@ class KarenTabInfo extends StatelessWidget {
     TabData("Base Stats", KarenBaseStats()),
     TabData("Evolution", KarenEvolution()),
     TabData(
-      "Moves",
-      Container(
-        alignment: Alignment.topCenter,
-        child: Text("Under development"),
-      ),
-    ),
+        "Strengths", // had to keep it short here
+        KarenStrengthsAndWeaknesses()),
   ];
 
   Widget _buildTabBar() {
@@ -34,7 +31,7 @@ class KarenTabInfo extends StatelessWidget {
       labelPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 16),
       indicatorSize: TabBarIndicatorSize.label,
       indicatorWeight: 2,
-      indicatorColor: AppColors.indigo,
+      indicatorColor: AppColors.karen,
       tabs: _tabs.map((tab) => Text(tab.label)).toList(),
     );
   }
