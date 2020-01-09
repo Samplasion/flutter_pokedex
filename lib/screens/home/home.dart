@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../configs/AppColors.dart';
+import '../../configs/AppColors.dart';
 import '../../widgets/poke_container.dart';
 import 'widgets/category_list.dart';
 import 'widgets/news_list.dart';
@@ -62,7 +63,7 @@ class _HomeState extends State<Home> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 28),
           child: Text(
-            "What Pokemon\nare you looking for?",
+            "What Karen\nare you looking for?",
             style: TextStyle(
               fontSize: 30,
               height: 0.9,
@@ -83,13 +84,14 @@ class _HomeState extends State<Home> {
       physics: BouncingScrollPhysics(),
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 28, right: 28, top: 0, bottom: 22),
+          padding:
+              const EdgeInsets.only(left: 28, right: 28, top: 0, bottom: 22),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "Pokémon News",
+                "Entitled Parents News",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w900,
@@ -106,7 +108,25 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-        NewsList(),
+        // NewsList(),
+        Center(
+          child: Text(
+            "Sorry, there are no news at the moment",
+            textAlign: TextAlign.center,
+          ),
+        ),
+        SizedBox(height: 40),
+        Center(
+          child: Text(
+            "KarenDex by Samplasion, an idea by u/Frostninja00, based on a work by scitbiz",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 10,
+              color: AppColors.grey,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -136,7 +156,7 @@ class _HomeState extends State<Home> {
               centerTitle: true,
               title: _showTitle
                   ? Text(
-                      "Pokedex",
+                      "KarenDex",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )
                   : null,

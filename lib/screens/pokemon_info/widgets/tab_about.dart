@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -5,14 +7,15 @@ import 'package:provider/provider.dart';
 import '../../../configs/AppColors.dart';
 import '../../../models/pokemon.dart';
 
-class PokemonAbout extends StatelessWidget {
+class KarenAbout extends StatelessWidget {
   Widget _buildSection(String text, {List<Widget> children, Widget child}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
           text,
-          style: TextStyle(fontSize: 16, height: 0.8, fontWeight: FontWeight.bold),
+          style:
+              TextStyle(fontSize: 16, height: 0.8, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 22),
         if (child != null) child,
@@ -38,7 +41,7 @@ class PokemonAbout extends StatelessWidget {
     );
   }
 
-  Widget _buildHeightWeight(String height, String weight) {
+  Widget _buildHeightWeight(int height, int weight, int weightDec) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
@@ -61,7 +64,7 @@ class PokemonAbout extends StatelessWidget {
               children: <Widget>[
                 _buildLabel("Height"),
                 SizedBox(height: 11),
-                Text("$height", style: TextStyle(height: 0.8))
+                Text("${height / 100}m", style: TextStyle(height: 0.8))
               ],
             ),
           ),
@@ -71,7 +74,7 @@ class PokemonAbout extends StatelessWidget {
               children: <Widget>[
                 _buildLabel("Weight"),
                 SizedBox(height: 11),
-                Text("$weight", style: TextStyle(height: 0.8))
+                Text("$weight.${weightDec}kg", style: TextStyle(height: 0.8))
               ],
             ),
           ),
@@ -80,55 +83,18 @@ class PokemonAbout extends StatelessWidget {
     );
   }
 
-  Widget _buildBreeding(Pokemon pokemon) {
+  Widget _buildBreeding(Karen pokemon) {
     return _buildSection("Breeding", children: [
       Row(
         children: <Widget>[
           Expanded(child: _buildLabel("Gender")),
-          if (!pokemon.genderless) ...[
-            Expanded(
-              child: Row(
-                children: <Widget>[
-                  Image.asset("assets/images/male.png", width: 12, height: 12),
-                  SizedBox(width: 4),
-                  Text(pokemon.malePercentage, style: TextStyle(height: 0.8)),
-                ],
-              ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              "Female",
+              style: TextStyle(height: 0.8),
             ),
-            Expanded(
-              flex: 2,
-              child: Row(
-                children: <Widget>[
-                  Image.asset("assets/images/female.png", width: 12, height: 12),
-                  SizedBox(width: 4),
-                  Text(pokemon.femalePercentage, style: TextStyle(height: 0.8)),
-                ],
-              ),
-            ),
-          ] else
-            Expanded(
-              flex: 3,
-              child: Text(
-                "Genderless",
-                style: TextStyle(height: 0.8),
-              ),
-            ),
-        ],
-      ),
-      SizedBox(height: 18),
-      Row(
-        children: <Widget>[
-          Expanded(child: _buildLabel("Egg Groups")),
-          Expanded(flex: 3, child: Text(pokemon.eggGroups, style: TextStyle(height: 0.8))),
-          //Expanded(flex: 2, child: SizedBox()),
-        ],
-      ),
-      SizedBox(height: 18),
-      Row(
-        children: <Widget>[
-          Expanded(child: _buildLabel("Egg Cycle")),
-          Expanded(child: Text(pokemon.cycles, style: TextStyle(height: 0.8))),
-          Expanded(flex: 2, child: SizedBox()),
+          ),
         ],
       ),
     ]);
@@ -149,17 +115,21 @@ class PokemonAbout extends StatelessWidget {
     );
   }
 
-  Widget _buildTraining(String baseExp) {
+  Widget _buildTraining() {
     return _buildSection(
       "Training",
       child: Row(
         children: <Widget>[
           Expanded(flex: 1, child: _buildLabel("Base EXP")),
-          Expanded(flex: 3, child: Text(baseExp)),
+          Expanded(flex: 3, child: Text("000")),
         ],
       ),
     );
   }
+
+  var height = (Random().nextInt(185 - 170) + 170);
+  var weight = (Random().nextInt(120 - 60) + 60);
+  var weightDec = Random().nextInt(9);
 
   @override
   Widget build(BuildContext context) {
@@ -167,18 +137,18 @@ class PokemonAbout extends StatelessWidget {
 
     return AnimatedBuilder(
       animation: cardController,
-      child: Consumer<PokemonModel>(
+      child: Consumer<KarenModel>(
         builder: (_, model, child) => Column(
           children: <Widget>[
             _buildDescription(model.pokemon.about),
             SizedBox(height: 28),
-            _buildHeightWeight(model.pokemon.height, model.pokemon.weight),
+            _buildHeightWeight(height, weight, weightDec),
             SizedBox(height: 31),
             _buildBreeding(model.pokemon),
             SizedBox(height: 35),
             _buildLocation(),
             SizedBox(height: 26),
-            _buildTraining(model.pokemon.baseExp),
+            _buildTraining(),
           ],
         ),
       ),
@@ -187,7 +157,9 @@ class PokemonAbout extends StatelessWidget {
 
         return SingleChildScrollView(
           padding: EdgeInsets.symmetric(vertical: 19, horizontal: 27),
-          physics: scrollable ? BouncingScrollPhysics() : NeverScrollableScrollPhysics(),
+          physics: scrollable
+              ? BouncingScrollPhysics()
+              : NeverScrollableScrollPhysics(),
           child: child,
         );
       },

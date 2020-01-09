@@ -10,14 +10,15 @@ import '../../widgets/pokemon_card.dart';
 import 'widgets/generation_modal.dart';
 import 'widgets/search_modal.dart';
 
-class Pokedex extends StatefulWidget {
-  const Pokedex();
+class KarenDex extends StatefulWidget {
+  const KarenDex();
 
   @override
-  _PokedexState createState() => _PokedexState();
+  _KarenDexState createState() => _KarenDexState();
 }
 
-class _PokedexState extends State<Pokedex> with SingleTickerProviderStateMixin {
+class _KarenDexState extends State<KarenDex>
+    with SingleTickerProviderStateMixin {
   Animation<double> _animation;
   AnimationController _animationController;
 
@@ -28,7 +29,8 @@ class _PokedexState extends State<Pokedex> with SingleTickerProviderStateMixin {
       duration: Duration(milliseconds: 260),
     );
 
-    final curvedAnimation = CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
+    final curvedAnimation =
+        CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
 
     super.initState();
@@ -36,10 +38,10 @@ class _PokedexState extends State<Pokedex> with SingleTickerProviderStateMixin {
 
   @override
   void didChangeDependencies() {
-    PokemonModel pokemonModel = PokemonModel.of(context, listen: true);
+    KarenModel pokemonModel = KarenModel.of(context, listen: true);
 
     if (!pokemonModel.hasData) {
-      getPokemonsList(context).then(pokemonModel.setPokemons);
+      getKarensList(context).then(pokemonModel.setKarens);
     }
 
     super.didChangeDependencies();
@@ -90,12 +92,12 @@ class _PokedexState extends State<Pokedex> with SingleTickerProviderStateMixin {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 26.0),
                 child: Text(
-                  "Pokedex",
+                  "KarenDex",
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
               ),
               SizedBox(height: 32),
-              Consumer<PokemonModel>(
+              Consumer<KarenModel>(
                 builder: (context, pokemonModel, child) => Expanded(
                   child: GridView.builder(
                     physics: BouncingScrollPhysics(),
@@ -107,7 +109,7 @@ class _PokedexState extends State<Pokedex> with SingleTickerProviderStateMixin {
                     ),
                     padding: EdgeInsets.only(left: 28, right: 28, bottom: 58),
                     itemCount: pokemonModel.pokemons.length,
-                    itemBuilder: (context, index) => PokemonCard(
+                    itemBuilder: (context, index) => KarenCard(
                       pokemonModel.pokemons[index],
                       index: index,
                       onPress: () {
@@ -122,44 +124,6 @@ class _PokedexState extends State<Pokedex> with SingleTickerProviderStateMixin {
           ),
           _buildOverlayBackground(),
         ],
-      ),
-      floatingActionButton: ExpandedAnimationFab(
-        items: [
-          FabItem(
-            "Favourite Pokemon",
-            Icons.favorite,
-            onPress: () {
-              _animationController.reverse();
-            },
-          ),
-          FabItem(
-            "All Type",
-            Icons.filter_vintage,
-            onPress: () {
-              _animationController.reverse();
-            },
-          ),
-          FabItem(
-            "All Gen",
-            Icons.flash_on,
-            onPress: () {
-              _animationController.reverse();
-              _showGenerationModal();
-            },
-          ),
-          FabItem(
-            "Search",
-            Icons.search,
-            onPress: () {
-              _animationController.reverse();
-              _showSearchModal();
-            },
-          ),
-        ],
-        animation: _animation,
-        onPress: _animationController.isCompleted
-            ? _animationController.reverse
-            : _animationController.forward,
       ),
     );
   }

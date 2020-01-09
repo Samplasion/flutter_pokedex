@@ -5,10 +5,10 @@ import 'package:provider/provider.dart';
 import '../../../configs/AppColors.dart';
 import '../../../models/pokemon.dart';
 
-class PokemonBall extends StatelessWidget {
-  const PokemonBall(this.pokemon, {Key key}) : super(key: key);
+class KarenBall extends StatelessWidget {
+  const KarenBall(this.pokemon, {Key key}) : super(key: key);
 
-  final Pokemon pokemon;
+  final Karen pokemon;
 
   @override
   Widget build(BuildContext context) {
@@ -27,28 +27,23 @@ class PokemonBall extends StatelessWidget {
               height: pokeballSize,
               color: AppColors.lightGrey,
             ),
-            CachedNetworkImage(
-              imageUrl: pokemon.image,
-              imageBuilder: (_, image) => Image(
-                image: image,
-                width: pokemonSize,
-                height: pokemonSize,
-              ),
-            )
           ],
         ),
         SizedBox(height: 3),
-        Text(pokemon.name),
+        Text(
+          pokemon.name,
+          textAlign: TextAlign.center,
+        ),
       ],
     );
   }
 }
 
-class PokemonEvolution extends StatelessWidget {
-  Widget _buildRow({current: Pokemon, next: Pokemon, reason: String}) {
+class KarenEvolution extends StatelessWidget {
+  Widget _buildRow({current: Karen, next: Karen, reason: String}) {
     return Row(
       children: <Widget>[
-        Expanded(child: PokemonBall(current)),
+        Expanded(child: KarenBall(current)),
         Expanded(
           child: Column(
             children: <Widget>[
@@ -61,7 +56,7 @@ class PokemonEvolution extends StatelessWidget {
             ],
           ),
         ),
-        Expanded(child: PokemonBall(next)),
+        Expanded(child: KarenBall(next)),
       ],
     );
   }
@@ -76,20 +71,18 @@ class PokemonEvolution extends StatelessWidget {
     );
   }
 
-  List<Widget> buildEvolutionList(List<Pokemon> pokemons) {
-    if (pokemons.length < 2) {
+  List<Widget> buildEvolutionList(List<Karen> pokemons) {
+    if (pokemons.length == 0)
       return [
         Center(child: Text("No evolution")),
       ];
-    }
 
     return Iterable<int>.generate(pokemons.length - 1) // skip the last one
         .map(
           (index) => _buildRow(
-            current: pokemons[index],
-            next: pokemons[index + 1],
-            reason: pokemons[index + 1].reason,
-          ),
+              current: pokemons[index],
+              next: pokemons[index + 1],
+              reason: "evolves in"),
         )
         .expand((widget) => [widget, _buildDivider()])
         .toList();
@@ -101,16 +94,20 @@ class PokemonEvolution extends StatelessWidget {
 
     return AnimatedBuilder(
       animation: cardController,
-      child: Consumer<PokemonModel>(
+      child: Consumer<KarenModel>(
         builder: (_, model, child) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
               "Evolution Chain",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, height: 0.8),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 16, height: 0.8),
             ),
             SizedBox(height: 28),
-            ...buildEvolutionList(model.pokemon.evolutions),
+            ...buildEvolutionList(model.pokemons
+                .getRange(model.pokemons.indexOf(model.pokemon),
+                    model.pokemons.length)
+                .toList()),
           ],
         ),
       ),
@@ -118,7 +115,9 @@ class PokemonEvolution extends StatelessWidget {
         final scrollable = cardController.value.floor() == 1;
 
         return SingleChildScrollView(
-          physics: scrollable ? BouncingScrollPhysics() : NeverScrollableScrollPhysics(),
+          physics: scrollable
+              ? BouncingScrollPhysics()
+              : NeverScrollableScrollPhysics(),
           padding: EdgeInsets.symmetric(vertical: 31, horizontal: 28),
           child: widget,
         );

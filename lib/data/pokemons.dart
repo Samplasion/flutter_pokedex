@@ -5,28 +5,21 @@ import 'package:flutter/material.dart';
 import '../configs/AppColors.dart';
 import '../models/pokemon.dart';
 
-// Parses Pokemon.json File
-Future<List<Pokemon>> getPokemonsList(BuildContext context) async {
-  String jsonString = await DefaultAssetBundle.of(context).loadString("assets/pokemons.json");
+// Parses Karen.json File
+Future<List<Karen>> getKarensList(BuildContext context) async {
+  String jsonString =
+      await DefaultAssetBundle.of(context).loadString("assets/pokemons.json");
   List<dynamic> jsonData = json.jsonDecode(jsonString);
 
-  List<Pokemon> pokemons = jsonData.map((json) => Pokemon.fromJson(json)).toList();
-
-  for (final pokemon in pokemons) {
-    List<Pokemon> evolutions = pokemon.evolutions
-        .map((item) => item.id)
-        .map((id) => pokemons.firstWhere((item) => item.id == id))
-        .toList();
-
-    pokemon.evolutions.setAll(0, evolutions);
-  }
+  List<Karen> pokemons = jsonData.map((json) => Karen.fromJson(json)).toList();
 
   return pokemons;
 }
 
 // A function to get Color for container of pokemon
-Color getPokemonColor(String typeOfPokemon) {
-  switch (typeOfPokemon.toLowerCase()) {
+Color getKarenColor(String typeOfKaren) {
+  return AppColors.karen;
+  switch (typeOfKaren.toLowerCase()) {
     case 'grass':
     case 'bug':
       return AppColors.lightTeal;

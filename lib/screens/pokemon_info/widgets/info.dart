@@ -10,14 +10,15 @@ import '../../../widgets/animated_slide.dart';
 import '../../../widgets/pokemon_type.dart';
 import 'decoration_box.dart';
 
-class PokemonOverallInfo extends StatefulWidget {
-  const PokemonOverallInfo();
+class KarenOverallInfo extends StatefulWidget {
+  const KarenOverallInfo();
 
   @override
-  _PokemonOverallInfoState createState() => _PokemonOverallInfoState();
+  _KarenOverallInfoState createState() => _KarenOverallInfoState();
 }
 
-class _PokemonOverallInfoState extends State<PokemonOverallInfo> with TickerProviderStateMixin {
+class _KarenOverallInfoState extends State<KarenOverallInfo>
+    with TickerProviderStateMixin {
   double textDiffLeft = 0.0;
   double textDiffTop = 0.0;
 
@@ -42,18 +43,24 @@ class _PokemonOverallInfoState extends State<PokemonOverallInfo> with TickerProv
 
   @override
   void initState() {
-    _slideController = AnimationController(vsync: this, duration: Duration(milliseconds: 360));
+    _slideController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 360));
     _slideController.forward();
 
-    _rotateController = AnimationController(vsync: this, duration: Duration(milliseconds: 5000));
+    _rotateController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 5000));
     _rotateController.repeat();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final RenderBox targetTextBox = _targetTextKey.currentContext.findRenderObject();
-      final Offset targetTextPosition = targetTextBox.localToGlobal(Offset.zero);
+      final RenderBox targetTextBox =
+          _targetTextKey.currentContext.findRenderObject();
+      final Offset targetTextPosition =
+          targetTextBox.localToGlobal(Offset.zero);
 
-      final RenderBox currentTextBox = _currentTextKey.currentContext.findRenderObject();
-      final Offset currentTextPosition = currentTextBox.localToGlobal(Offset.zero);
+      final RenderBox currentTextBox =
+          _currentTextKey.currentContext.findRenderObject();
+      final Offset currentTextPosition =
+          currentTextBox.localToGlobal(Offset.zero);
 
       textDiffLeft = targetTextPosition.dx - currentTextPosition.dx;
       textDiffTop = targetTextPosition.dy - currentTextPosition.dy;
@@ -65,9 +72,10 @@ class _PokemonOverallInfoState extends State<PokemonOverallInfo> with TickerProv
   @override
   void didChangeDependencies() {
     if (_pageController == null) {
-      PokemonModel pokemonModel = PokemonModel.of(context);
+      KarenModel pokemonModel = KarenModel.of(context);
 
-      _pageController = PageController(viewportFraction: 0.6, initialPage: pokemonModel.index);
+      _pageController = PageController(
+          viewportFraction: 0.6, initialPage: pokemonModel.index);
       _pageController.addListener(() {
         int next = _pageController.page.round();
 
@@ -121,9 +129,10 @@ class _PokemonOverallInfoState extends State<PokemonOverallInfo> with TickerProv
     );
   }
 
-  Widget _buildPokemonName(Pokemon pokemon) {
+  Widget _buildKarenName(Karen pokemon) {
     final cardScrollController = Provider.of<AnimationController>(context);
-    final fadeAnimation = Tween(begin: 1.0, end: 0.0).animate(cardScrollController);
+    final fadeAnimation =
+        Tween(begin: 1.0, end: 0.0).animate(cardScrollController);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 26),
@@ -146,10 +155,11 @@ class _PokemonOverallInfoState extends State<PokemonOverallInfo> with TickerProv
                     child: Text(
                       pokemon.name,
                       key: _currentTextKey,
+                      maxLines: 2,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w900,
-                        fontSize: 36 - (36 - 22) * value,
+                        fontSize: 32 - (36 - 24) * value,
                       ),
                     ),
                   ),
@@ -182,9 +192,10 @@ class _PokemonOverallInfoState extends State<PokemonOverallInfo> with TickerProv
     );
   }
 
-  Widget _buildPokemonTypes(Pokemon pokemon) {
+  Widget _buildKarenTypes(Karen pokemon) {
     final cardScrollController = Provider.of<AnimationController>(context);
-    final fadeAnimation = Tween(begin: 1.0, end: 0.0).animate(cardScrollController);
+    final fadeAnimation =
+        Tween(begin: 1.0, end: 0.0).animate(cardScrollController);
 
     return AnimatedFade(
       animation: fadeAnimation,
@@ -197,13 +208,14 @@ class _PokemonOverallInfoState extends State<PokemonOverallInfo> with TickerProv
           children: <Widget>[
             Row(
               children: pokemon.types
-                  .map((type) => Hero(tag: type, child: PokemonType(type, large: true)))
+                  .map((type) =>
+                      Hero(tag: type, child: KarenType(type, large: true)))
                   .toList(),
             ),
             AnimatedSlide(
               animation: _slideController,
               child: Text(
-                pokemon.category,
+                pokemon.name,
                 style: TextStyle(color: Colors.white, fontSize: 14),
               ),
             ),
@@ -213,7 +225,8 @@ class _PokemonOverallInfoState extends State<PokemonOverallInfo> with TickerProv
     );
   }
 
-  Widget _buildPokemonSlider(BuildContext context, Pokemon pokemon, List<Pokemon> pokemons) {
+  Widget _buildKarenSlider(
+      BuildContext context, Karen pokemon, List<Karen> pokemons) {
     final screenSize = MediaQuery.of(context).size;
     final cardScrollController = Provider.of<AnimationController>(context);
     final fadeAnimation = Tween(begin: 1.0, end: 0.0).animate(
@@ -227,7 +240,7 @@ class _PokemonOverallInfoState extends State<PokemonOverallInfo> with TickerProv
       ),
     );
 
-    final selectedIndex = PokemonModel.of(context).index;
+    final selectedIndex = KarenModel.of(context).index;
 
     return AnimatedFade(
       animation: fadeAnimation,
@@ -253,26 +266,17 @@ class _PokemonOverallInfoState extends State<PokemonOverallInfo> with TickerProv
               controller: _pageController,
               itemCount: pokemons.length,
               onPageChanged: (index) {
-                PokemonModel.of(context).setSelectedIndex(index);
+                KarenModel.of(context).setSelectedIndex(index);
               },
               itemBuilder: (context, index) => Hero(
-                tag: pokemons[index].image,
+                tag: pokemons[index].name.substring(1),
                 child: AnimatedPadding(
                   duration: Duration(milliseconds: 600),
                   curve: Curves.easeOutQuint,
                   padding: EdgeInsets.only(
                     top: selectedIndex == index ? 0 : screenSize.height * 0.04,
-                    bottom: selectedIndex == index ? 0 : screenSize.height * 0.04,
-                  ),
-                  child: CachedNetworkImage(
-                    imageUrl: pokemons[index].image,
-                    imageBuilder: (context, image) => Image(
-                      image: image,
-                      width: screenSize.height * 0.28,
-                      height: screenSize.height * 0.28,
-                      alignment: Alignment.bottomCenter,
-                      color: selectedIndex == index ? null : Colors.black26,
-                    ),
+                    bottom:
+                        selectedIndex == index ? 0 : screenSize.height * 0.04,
                   ),
                 ),
               ),
@@ -287,11 +291,14 @@ class _PokemonOverallInfoState extends State<PokemonOverallInfo> with TickerProv
     final screenSize = MediaQuery.of(context).size;
 
     final cardScrollController = Provider.of<AnimationController>(context);
-    final dottedAnimation = Tween(begin: 1.0, end: 0.0).animate(cardScrollController);
+    final dottedAnimation =
+        Tween(begin: 1.0, end: 0.0).animate(cardScrollController);
 
     final pokeSize = screenSize.width * 0.448;
-    final pokeTop = -(pokeSize / 2 - (IconTheme.of(context).size / 2 + _appBarTopPadding));
-    final pokeRight = -(pokeSize / 2 - (IconTheme.of(context).size / 2 + _appBarHorizontalPadding));
+    final pokeTop =
+        -(pokeSize / 2 - (IconTheme.of(context).size / 2 + _appBarTopPadding));
+    final pokeRight = -(pokeSize / 2 -
+        (IconTheme.of(context).size / 2 + _appBarHorizontalPadding));
 
     return [
       Positioned(
@@ -336,16 +343,16 @@ class _PokemonOverallInfoState extends State<PokemonOverallInfo> with TickerProv
     return Stack(
       children: [
         ..._buildDecorations(),
-        Consumer<PokemonModel>(
+        Consumer<KarenModel>(
           builder: (_, model, child) => Column(
             children: <Widget>[
               _buildAppBar(),
               SizedBox(height: 9),
-              _buildPokemonName(model.pokemon),
+              _buildKarenName(model.pokemon),
               SizedBox(height: 9),
-              _buildPokemonTypes(model.pokemon),
+              _buildKarenTypes(model.pokemon),
               SizedBox(height: 25),
-              _buildPokemonSlider(context, model.pokemon, model.pokemons),
+              _buildKarenSlider(context, model.pokemon, model.pokemons),
             ],
           ),
         ),

@@ -11,7 +11,7 @@ import 'widgets/fade_page_route.dart';
 void main() => runApp(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(builder: (context) => PokemonModel()),
+          ChangeNotifierProvider(builder: (context) => KarenModel()),
           // ... other provider(s)
         ],
         child: MyApp(),
@@ -25,10 +25,10 @@ class MyApp extends StatelessWidget {
         return FadeRoute(page: Home());
 
       case '/pokedex':
-        return FadeRoute(page: Pokedex());
+        return FadeRoute(page: KarenDex());
 
       case '/pokemon-info':
-        return FadeRoute(page: PokemonInfo());
+        return FadeRoute(page: KarenInfo());
 
       default:
         return null;
@@ -55,7 +55,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         fontFamily: 'CircularStd',
-        textTheme: Theme.of(context).textTheme.apply(displayColor: AppColors.black),
+        textTheme:
+            Theme.of(context).textTheme.apply(displayColor: AppColors.black),
         scaffoldBackgroundColor: AppColors.lightGrey,
         primarySwatch: Colors.blue,
       ),

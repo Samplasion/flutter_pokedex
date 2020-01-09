@@ -16,8 +16,8 @@ String capitalizeFirstChar(String text) {
   return text[0].toUpperCase() + text.substring(1);
 }
 
-class PokemonCard extends StatelessWidget {
-  const PokemonCard(
+class KarenCard extends StatelessWidget {
+  const KarenCard(
     this.pokemon, {
     @required this.index,
     Key key,
@@ -26,14 +26,14 @@ class PokemonCard extends StatelessWidget {
 
   final int index;
   final Function onPress;
-  final Pokemon pokemon;
+  final Karen pokemon;
 
   List<Widget> _buildTypes() {
     final widgetTypes = pokemon.types
         .map(
           (type) => Hero(
             tag: pokemon.name + type,
-            child: PokemonType(capitalizeFirstChar(type)),
+            child: KarenType(capitalizeFirstChar(type)),
           ),
         )
         .expand((item) => [item, SizedBox(height: 6)]);
@@ -87,19 +87,7 @@ class PokemonCard extends StatelessWidget {
       Positioned(
         bottom: 8,
         right: 12,
-        child: Hero(
-          tag: pokemon.image,
-          child: CachedNetworkImage(
-            imageUrl: pokemon.image,
-            imageBuilder: (context, imageProvider) => Image(
-              image: imageProvider,
-              fit: BoxFit.contain,
-              width: itemHeight * 0.6,
-              height: itemHeight * 0.6,
-              alignment: Alignment.bottomRight,
-            ),
-          ),
-        ),
+        child: Hero(tag: pokemon.name.substring(1), child: Text(pokemon.id)),
       ),
       Positioned(
         top: 10,

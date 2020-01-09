@@ -10,13 +10,13 @@ class CategoryList extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 2.44,
+        crossAxisCount: 1,
+        childAspectRatio: 2.66,
         crossAxisSpacing: 10,
-        mainAxisSpacing: 12,
+        mainAxisSpacing: 10,
       ),
       padding: EdgeInsets.only(left: 28, right: 28, bottom: 58),
-      itemCount: categories.length,
+      itemCount: 1,
       itemBuilder: (context, index) => PokeCategoryCard(
         categories[index],
         onPress: () => Navigator.of(context).pushNamed("/pokedex"),

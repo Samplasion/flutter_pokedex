@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -53,14 +55,15 @@ class Stat extends StatelessWidget {
   }
 }
 
-class PokemonBaseStats extends StatefulWidget {
-  const PokemonBaseStats({Key key}) : super(key: key);
+class KarenBaseStats extends StatefulWidget {
+  const KarenBaseStats({Key key}) : super(key: key);
 
   @override
-  _PokemonBaseStatsState createState() => _PokemonBaseStatsState();
+  _KarenBaseStatsState createState() => _KarenBaseStatsState();
 }
 
-class _PokemonBaseStatsState extends State<PokemonBaseStats> with SingleTickerProviderStateMixin {
+class _KarenBaseStatsState extends State<KarenBaseStats>
+    with SingleTickerProviderStateMixin {
   Animation<double> _animation;
   AnimationController _controller;
 
@@ -90,25 +93,34 @@ class _PokemonBaseStatsState extends State<PokemonBaseStats> with SingleTickerPr
     _controller.forward();
   }
 
-  List<Widget> generateStatWidget(Pokemon pokemon) {
+  List<Widget> generateStatWidget(Karen pokemon) {
+    var id = (double.parse(pokemon.id.substring(2))) * 5;
+    var hp = min(id * 2, 100);
+    var atk = id * 1.7;
+    var def = id * 1.8;
+    var spa = id * 1.6;
+    var sde = min(id * 1.9, 100);
+    var spd = id * 1.2;
+    var tot = hp + atk + def + spa + spd + spd;
+
     return [
-      Stat(animation: _animation, label: "Hp", value: pokemon.hp),
+      Stat(animation: _animation, label: "Hp", value: hp),
       SizedBox(height: 14),
-      Stat(animation: _animation, label: "Atttack", value: pokemon.attack),
+      Stat(animation: _animation, label: "Atttack", value: atk),
       SizedBox(height: 14),
-      Stat(animation: _animation, label: "Defense", value: pokemon.defense),
+      Stat(animation: _animation, label: "Defense", value: def),
       SizedBox(height: 14),
-      Stat(animation: _animation, label: "Sp. Atk", value: pokemon.specialAttack),
+      Stat(animation: _animation, label: "Sp. Atk", value: spa),
       SizedBox(height: 14),
-      Stat(animation: _animation, label: "Sp. Def", value: pokemon.specialDefense),
+      Stat(animation: _animation, label: "Sp. Def", value: sde),
       SizedBox(height: 14),
-      Stat(animation: _animation, label: "Speed", value: pokemon.speed),
+      Stat(animation: _animation, label: "Speed", value: spd),
       SizedBox(height: 14),
       Stat(
           animation: _animation,
           label: "Total",
-          value: pokemon.total,
-          progress: pokemon.total / 600),
+          value: tot,
+          progress: tot / 600),
     ];
   }
 
@@ -116,7 +128,7 @@ class _PokemonBaseStatsState extends State<PokemonBaseStats> with SingleTickerPr
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(24),
-      child: Consumer<PokemonModel>(
+      child: Consumer<KarenModel>(
         builder: (_, model, child) => Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,

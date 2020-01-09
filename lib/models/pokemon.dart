@@ -5,105 +5,50 @@ import 'package:provider/provider.dart';
 
 import '../data/pokemons.dart';
 
-class Pokemon {
-  const Pokemon({
+class Karen {
+  const Karen({
     @required this.id,
     this.name,
-    this.image,
-    this.types = const [],
     this.about,
-    this.height,
-    this.weight,
-    this.category,
-    this.hp,
-    this.attack,
-    this.defense,
-    this.specialAttack,
-    this.specialDefense,
-    this.speed,
-    this.total,
-    this.malePercentage,
-    this.femalePercentage,
-    this.genderless,
-    this.cycles,
-    this.eggGroups,
-    this.baseExp,
-    this.evolvedFrom,
-    this.reason,
-    this.evolutions = const [],
+    this.types = const ["Karen"],
+    this.strengths,
+    this.weaknesses,
   });
 
-  Pokemon.fromJson(dynamic json)
+  Karen.fromJson(dynamic json)
       : id = json["id"],
         name = json["name"],
-        image = json["imageurl"],
+        about = json["description"],
         types = json["typeofpokemon"].cast<String>(),
-        about = json["xdescription"],
-        height = json["height"],
-        weight = json["weight"],
-        category = json["category"],
-        hp = json['hp'],
-        attack = json['attack'],
-        defense = json['defense'],
-        speed = json['speed'],
-        specialDefense = json['special_defense'],
-        specialAttack = json['special_attack'],
-        total = json['total'],
-        malePercentage = json['male_percentage'],
-        femalePercentage = json['female_percentage'],
-        genderless = json['genderless'] == 1,
-        cycles = json['cycles'],
-        eggGroups = json['egg_groups'],
-        baseExp = json['base_exp'],
-        evolvedFrom = json['evolvedfrom'],
-        reason = json['reason'],
-        evolutions =
-            json['evolutions'].map((id) => Pokemon(id: id as String)).cast<Pokemon>().toList();
+        strengths = json["strengths"].cast<String>(),
+        weaknesses = json["weaknesses"].cast<String>();
 
   final String about;
-  final int attack;
-  final String baseExp;
-  final String category;
-  final String cycles;
-  final int defense;
-  final String eggGroups;
-  final String evolvedFrom;
-  final String femalePercentage;
-  final bool genderless;
-  final String height;
-  final int hp;
   final String id;
-  final String image;
-  final String malePercentage;
   final String name;
-  final String reason;
-  final int specialAttack;
-  final int specialDefense;
-  final int speed;
-  final int total;
   final List<String> types;
-  final String weight;
-  final List<Pokemon> evolutions;
+  final List<String> strengths;
+  final List<String> weaknesses;
 
-  Color get color => getPokemonColor(types[0]);
+  Color get color => getKarenColor(types[0]);
 }
 
-class PokemonModel extends ChangeNotifier {
-  final List<Pokemon> _pokemons = [];
+class KarenModel extends ChangeNotifier {
+  final List<Karen> _pokemons = [];
   int _selectedIndex = 0;
 
-  UnmodifiableListView<Pokemon> get pokemons => UnmodifiableListView(_pokemons);
+  UnmodifiableListView<Karen> get pokemons => UnmodifiableListView(_pokemons);
 
   bool get hasData => _pokemons.length > 0;
 
-  Pokemon get pokemon => _pokemons[_selectedIndex];
+  Karen get pokemon => _pokemons[_selectedIndex];
 
   int get index => _selectedIndex;
 
-  static PokemonModel of(BuildContext context, {bool listen = false}) =>
-      Provider.of<PokemonModel>(context, listen: listen);
+  static KarenModel of(BuildContext context, {bool listen = false}) =>
+      Provider.of<KarenModel>(context, listen: listen);
 
-  void setPokemons(List<Pokemon> pokemons) {
+  void setKarens(List<Karen> pokemons) {
     _pokemons.clear();
     _pokemons.addAll(pokemons);
 

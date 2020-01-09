@@ -13,11 +13,11 @@ class TabData {
   final String label;
 }
 
-class PokemonTabInfo extends StatelessWidget {
+class KarenTabInfo extends StatelessWidget {
   final List<TabData> _tabs = [
-    TabData("About", PokemonAbout()),
-    TabData("Base Stats", PokemonBaseStats()),
-    TabData("Evolution", PokemonEvolution()),
+    TabData("About", KarenAbout()),
+    TabData("Base Stats", KarenBaseStats()),
+    TabData("Evolution", KarenEvolution()),
     TabData(
       "Moves",
       Container(
@@ -69,7 +69,8 @@ class PokemonTabInfo extends StatelessWidget {
           children: <Widget>[
             AnimatedBuilder(
               animation: scrollController,
-              builder: (context, _) => SizedBox(height: (1 - scrollController.value) * 16 + 6),
+              builder: (context, _) =>
+                  SizedBox(height: (1 - scrollController.value) * 16 + 6),
             ),
             _buildTabBar(),
             _buildTabContent(),
